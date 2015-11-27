@@ -7,7 +7,7 @@
 #
 class uwsgi::params {
     $package_name        = 'uwsgi'
-    $package_ensure      = 'installed'
+    $package_ensure      = 'present'
     $package_provider    = 'pip'
     $service_name        = 'uwsgi'
     $service_ensure      = true

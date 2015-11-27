@@ -1,17 +1,33 @@
 {
-  "name": "engage-uwsgi",
-  "version": "1.3.0",
-  "author": "jarshwah <josh.smeaton@gmail.com>",
-  "summary": "Install and configure uwsgi in Emperor mode",
+  "name": "cwood-uwsgi",
+  "version": "0.1.0",
+  "author": "cwood",
+  "summary": "Manage uwsgi through emporer mode",
   "license": "MIT",
-  "source": "https://github.com/Engage/puppet-uwsgi",
-  "project_page": "https://github.com/Engage/puppet-uwsgi",
-  "issues_url": "https://github.com/Engage/puppet-uwsgi/issues",
+  "source": "github.com/cwood/puppet-uwsgi",
+  "project_page": "https://github.com/cwood/puppet-uwsgi",
+  "issues_url": "https://github.com/cwood/puppet-uwsgi/issues",
   "dependencies": [
     {
       "name": "puppetlabs-stdlib",
-      "version_requirement": ">=3.2.0"
+      "version_requirement": ">= 1.0.0"
+    }
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "5",
+        "6",
+        "7"
+      ]
     }
   ]
 }
-

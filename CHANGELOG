@@ -1,26 +1,3 @@
-1.3.0 - 2015-04-?
-------------------
-* Made tyrant mode configurable
-* Optionally deploy logrotate configuration
-
-1.2.0 - 2014-08-20
-------------------
-* support for passing an array of values into app::application_options (Thanks @rayl)
-
-1.1.0 - 2014-07-17
-------------------
-* Support for listing environment variables per application (Thanks @kimor79)
-* Fix typo in the upstart script (Thanks @Kodapa)
-
-1.0.1 - 2014-06-20
-------------------
-* emperor log directory can now be changed
-
-1.0.0 - 2014-06-19
-------------------
-* Added init.d service template
-* Auto-configure template based on service provider
-
-0.9.0 - 2014-05-24
-------------------
-* Added support for uwsgi vassal creation
+YYYY-MM-DD Release 0.1.0
+- something you did
+- something else you did
