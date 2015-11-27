@@ -21,6 +21,9 @@ class uwsgi::params {
     $log_file            = '/var/log/uwsgi/uwsgi-emperor.log'
     $log_rotate          = 'no'
     $python_pip          = 'python-pip'
+    $service_file_ensure = 'present'
+    $user = 'root'
+    $group = 'root'
 
     case $::osfamily {
         'redhat': {
@@ -28,12 +31,21 @@ class uwsgi::params {
             $pidfile       = '/var/run/uwsgi/uwsgi.pid'
             $python_dev    = 'python-devel'
             $socket        = '/var/run/uwsgi/uwsgi.socket'
+            $service_file  = '/etc/init.d/uwsgi'
+            $service_file_template = 'uwsgi/uwsgi_service-redhat.erb'
+            $service_mode  = '0555'
         }
-        default: {
+        'debian': {
             $app_directory = '/etc/uwsgi/apps-enabled'
             $pidfile       = '/run/uwsgi/uwsgi.pid'
             $python_dev    = 'python-dev'
             $socket        = '/run/uwsgi/uwsgi.socket'
+            $service_file = '/etc/init/uwsgi.conf'
+            $service_file_template = 'uwsgi/uwsgi_upstart.conf.erb'
+            $service_mode = '0644'
+        }
+        default: {
+          fail("${::operatingsystem} not supported")
         }
     }
 }

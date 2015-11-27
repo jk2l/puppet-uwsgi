@@ -89,133 +89,39 @@
 # - Josh Smeaton <josh.smeaton@gmail.com>
 #
 class uwsgi (
-    $package_name        = $uwsgi::params::package_name,
-    $package_ensure      = $uwsgi::params::package_ensure,
-    $package_provider    = $uwsgi::params::package_provider,
-    $service_name        = $uwsgi::params::service_name,
-    $service_file        = undef,
-    $service_file_mode   = undef,
-    $service_template    = undef,
-    $service_ensure      = $uwsgi::params::service_ensure,
-    $service_enable      = $uwsgi::params::service_enable,
-    $service_provider    = $uwsgi::params::service_provider,
-    $manage_service_file = $uwsgi::params::manage_service_file,
-    $config_file         = $uwsgi::params::config_file,
-    $log_file            = $uwsgi::params::log_file,
-    $log_rotate          = $uwsgi::params::log_rotate,
-    $app_directory       = $uwsgi::params::app_directory,
-    $tyrant              = $uwsgi::params::tyrant,
-    $install_pip         = $uwsgi::params::install_pip,
-    $install_python_dev  = $uwsgi::params::install_python_dev,
-    $python_pip          = $uwsgi::params::python_pip,
-    $python_dev          = $uwsgi::params::python_dev,
-    $pidfile             = $uwsgi::params::pidfile,
-    $socket              = $uwsgi::params::socket,
-    $emperor_options     = undef
+    $package_name          = $uwsgi::params::package_name,
+    $package_ensure        = $uwsgi::params::package_ensure,
+    $package_provider      = $uwsgi::params::package_provider,
+    $service_name          = $uwsgi::params::service_name,
+    $service_file          = $::uwsgi::params::service_file,
+    $service_file_template = $::uwsgi::params::service_file_template,
+    $service_mode          = $::uwsgi::params::service_mode,
+    $service_template      = undef,
+    $service_ensure        = $uwsgi::params::service_ensure,
+    $service_enable        = $uwsgi::params::service_enable,
+    $service_provider      = $uwsgi::params::service_provider,
+    $manage_service_file   = $uwsgi::params::manage_service_file,
+    $config_file           = $uwsgi::params::config_file,
+    $log_file              = $uwsgi::params::log_file,
+    $log_rotate            = $uwsgi::params::log_rotate,
+    $app_directory         = $uwsgi::params::app_directory,
+    $tyrant                = $uwsgi::params::tyrant,
+    $install_pip           = $uwsgi::params::install_pip,
+    $install_python_dev    = $uwsgi::params::install_python_dev,
+    $python_pip            = $uwsgi::params::python_pip,
+    $python_dev            = $uwsgi::params::python_dev,
+    $pidfile               = $uwsgi::params::pidfile,
+    $socket                = $uwsgi::params::socket,
+    $emperor_options       = undef
 ) inherits uwsgi::params {
 
     validate_re($log_rotate, '^yes$|^no$|^purge$')
 
-    if ! defined(Package[$python_dev]) and $install_python_dev {
-        package { $python_dev:
-            ensure => present,
-            before => Package[$package_name],
-        }
-    }
+    class{'::uwsgi::install': }->
+    class{'::uwsgi::config': }~>
+    class{'::uwsgi::service': }->
+    Class['::uwsgi']
 
-    if ! defined(Package[$python_pip]) and $install_pip {
-        package { $python_pip:
-            ensure => present,
-            before => Package[$package_name],
-        }
-    }
-
-    package { $package_name:
-        ensure   => $package_ensure,
-        provider => $package_provider,
-    }
-
-    # remove config files if package is purged
-    $file_ensure = $package_ensure ? {
-        'absent' => 'absent',
-        'purged' => 'absent',
-        default  => 'present'
-    }
-
-    file { $config_file:
-        ensure  => $file_ensure,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        content => template('uwsgi/uwsgi.ini.erb'),
-        require => Package[$package_name],
-    }
-
-    if $manage_service_file == true {
-      if $service_file == undef {
-          $service_file_real = $service_provider ? {
-              'redhat'  => '/etc/init.d/uwsgi',
-              'upstart' => '/etc/init/uwsgi.conf',
-              default => '/etc/init/uwsgi.conf',
-          }
-      } else {
-          $service_file_real = $service_file
-      }
-
-      if $service_file_mode == undef {
-          $service_file_mode_real = $service_provider ? {
-              'redhat'  => '0555',
-              'upstart' => '0644',
-              default   => '0644',
-          }
-      } else {
-          $service_file_mode_real = $service_file_mode
-      }
-
-      if $service_template == undef {
-          $service_template_real = $service_provider ? {
-              'redhat'  => 'uwsgi/uwsgi_service-redhat.erb',
-              'upstart' => 'uwsgi/uwsgi_upstart.conf.erb',
-              default => 'uwsgi/uwsgi_upstart.conf.erb',
-          }
-      } else {
-          $service_template_real = $service_template
-      }
-
-      file { $service_file_real:
-        ensure  => $file_ensure,
-        owner   => 'root',
-        group   => 'root',
-        mode    => $service_file_mode_real,
-        replace => $manage_service_file,
-        content => template($service_template_real),
-        require => Package[$package_name],
-      }
-      $required_files = [ $config_file, $service_file_real ]
-    } else {
-      $required_files = $config_file
-    }
-
-    file { $app_directory:
-        ensure  => 'directory',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        require => Package[$package_name],
-    }
-
-    service { $service_name:
-        ensure     => $service_ensure,
-        enable     => $service_enable,
-        hasrestart => true,
-        hasstatus  => true,
-        provider   => $service_provider,
-        require    => [
-          Package[$package_name],
-          File[$required_files]
-        ],
-        subscribe  => File[$required_files],
-    }
 
     case $log_rotate {
         'yes': {
