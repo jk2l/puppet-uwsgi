@@ -23,7 +23,7 @@ class uwsgi::params {
     $python_pip          = 'python-pip'
 
     case $::osfamily {
-        redhat: {
+        'redhat': {
             $app_directory = '/etc/uwsgi.d'
             $pidfile       = '/var/run/uwsgi/uwsgi.pid'
             $python_dev    = 'python-devel'

@@ -119,20 +119,20 @@ class uwsgi (
     if ! defined(Package[$python_dev]) and $install_python_dev {
         package { $python_dev:
             ensure => present,
-            before => Package[$package_name]
+            before => Package[$package_name],
         }
     }
 
     if ! defined(Package[$python_pip]) and $install_pip {
         package { $python_pip:
             ensure => present,
-            before => Package[$package_name]
+            before => Package[$package_name],
         }
     }
 
     package { $package_name:
         ensure   => $package_ensure,
-        provider => $package_provider
+        provider => $package_provider,
     }
 
     # remove config files if package is purged
@@ -148,14 +148,14 @@ class uwsgi (
         group   => 'root',
         mode    => '0644',
         content => template('uwsgi/uwsgi.ini.erb'),
-        require => Package[$package_name]
+        require => Package[$package_name],
     }
 
     if $manage_service_file == true {
       if $service_file == undef {
           $service_file_real = $service_provider ? {
-              redhat  => '/etc/init.d/uwsgi',
-              upstart => '/etc/init/uwsgi.conf',
+              'redhat'  => '/etc/init.d/uwsgi',
+              'upstart' => '/etc/init/uwsgi.conf',
               default => '/etc/init/uwsgi.conf',
           }
       } else {
@@ -164,9 +164,9 @@ class uwsgi (
 
       if $service_file_mode == undef {
           $service_file_mode_real = $service_provider ? {
-              redhat  => '0555',
-              upstart => '0644',
-              default => '0644',
+              'redhat'  => '0555',
+              'upstart' => '0644',
+              default   => '0644',
           }
       } else {
           $service_file_mode_real = $service_file_mode
@@ -174,8 +174,8 @@ class uwsgi (
 
       if $service_template == undef {
           $service_template_real = $service_provider ? {
-              redhat  => 'uwsgi/uwsgi_service-redhat.erb',
-              upstart => 'uwsgi/uwsgi_upstart.conf.erb',
+              'redhat'  => 'uwsgi/uwsgi_service-redhat.erb',
+              'upstart' => 'uwsgi/uwsgi_upstart.conf.erb',
               default => 'uwsgi/uwsgi_upstart.conf.erb',
           }
       } else {
@@ -183,13 +183,13 @@ class uwsgi (
       }
 
       file { $service_file_real:
-          ensure   => $file_ensure,
-          owner    => 'root',
-          group    => 'root',
-          mode     => $service_file_mode_real,
-          replace  => $manage_service_file,
-          content  => template($service_template_real),
-          require  => Package[$package_name]
+        ensure  => $file_ensure,
+        owner   => 'root',
+        group   => 'root',
+        mode    => $service_file_mode_real,
+        replace => $manage_service_file,
+        content => template($service_template_real),
+        require => Package[$package_name],
       }
       $required_files = [ $config_file, $service_file_real ]
     } else {
@@ -201,7 +201,7 @@ class uwsgi (
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
-        require => Package[$package_name]
+        require => Package[$package_name],
     }
 
     service { $service_name:
@@ -211,10 +211,10 @@ class uwsgi (
         hasstatus  => true,
         provider   => $service_provider,
         require    => [
-            Package[$package_name],
-            File[$required_files]
-            ],
-        subscribe  => File[$required_files]
+          Package[$package_name],
+          File[$required_files]
+        ],
+        subscribe  => File[$required_files],
     }
 
     case $log_rotate {
@@ -227,10 +227,13 @@ class uwsgi (
                 content => template('uwsgi/uwsgi_logrotate.erb'),
             }
         }
-        'absent', 'purge', 'purged': {
+        'absent', 'purge', 'purged', 'no': {
             file { '/etc/logrotate.d/uwsgi':
                 ensure  => 'absent',
             }
+        }
+        default: {
+          fail('Must be either, yes, absent, purge, or purged')
         }
     }
 
