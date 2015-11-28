@@ -18,6 +18,7 @@
 # Source function library.
 . /etc/rc.d/init.d/functions
 
+RUNAS="<%= @user %>"
 UWSGILOG="<%= @log_file %>"
 UWSGIPID="<%= @pidfile %>"
 UWSGISOCKET="<%= @socket %>"
@@ -59,7 +60,7 @@ start() {
 	echo
 	[ $RETVAL -eq 0 ] && touch $lockfile
 	return $RETVAL
-}	
+}
 
 stop() {
 	[ "$EUID" != "0" ] && exit 4
