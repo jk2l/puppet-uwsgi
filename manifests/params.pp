@@ -22,8 +22,8 @@ class uwsgi::params {
     $log_rotate          = 'no'
     $python_pip          = 'python-pip'
     $service_file_ensure = 'present'
-    $user = 'root'
-    $group = 'root'
+    $user = 'uwsgi'
+    $group = 'uwsgi'
 
     case $::osfamily {
         'redhat': {
