@@ -87,32 +87,35 @@
 #
 # === Authors
 # - Josh Smeaton <josh.smeaton@gmail.com>
+# - Colin Wood <cwood06@gmail.com>
 #
 class uwsgi (
-    $package_name          = $uwsgi::params::package_name,
-    $package_ensure        = $uwsgi::params::package_ensure,
-    $package_provider      = $uwsgi::params::package_provider,
-    $service_name          = $uwsgi::params::service_name,
+    $package_name          = $::uwsgi::params::package_name,
+    $package_ensure        = $::uwsgi::params::package_ensure,
+    $package_provider      = $::uwsgi::params::package_provider,
+    $service_name          = $::uwsgi::params::service_name,
     $service_file          = $::uwsgi::params::service_file,
     $service_file_template = $::uwsgi::params::service_file_template,
     $service_mode          = $::uwsgi::params::service_mode,
     $service_template      = $::uwsgi::params::service_template,
-    $service_ensure        = $uwsgi::params::service_ensure,
-    $service_enable        = $uwsgi::params::service_enable,
-    $service_provider      = $uwsgi::params::service_provider,
-    $manage_service_file   = $uwsgi::params::manage_service_file,
-    $config_file           = $uwsgi::params::config_file,
-    $log_file              = $uwsgi::params::log_file,
-    $log_rotate            = $uwsgi::params::log_rotate,
-    $app_directory         = $uwsgi::params::app_directory,
-    $tyrant                = $uwsgi::params::tyrant,
-    $install_pip           = $uwsgi::params::install_pip,
-    $install_python_dev    = $uwsgi::params::install_python_dev,
-    $python_pip            = $uwsgi::params::python_pip,
-    $python_dev            = $uwsgi::params::python_dev,
-    $pidfile               = $uwsgi::params::pidfile,
-    $socket                = $uwsgi::params::socket,
-    $emperor_options       = undef
+    $service_ensure        = $::uwsgi::params::service_ensure,
+    $service_enable        = $::uwsgi::params::service_enable,
+    $service_provider      = $::uwsgi::params::service_provider,
+    $manage_service_file   = $::uwsgi::params::manage_service_file,
+    $config_file           = $::uwsgi::params::config_file,
+    $log_file              = $::uwsgi::params::log_file,
+    $log_rotate            = $::uwsgi::params::log_rotate,
+    $app_directory         = $::uwsgi::params::app_directory,
+    $tyrant                = $::uwsgi::params::tyrant,
+    $install_pip           = $::uwsgi::params::install_pip,
+    $install_python_dev    = $::uwsgi::params::install_python_dev,
+    $python_pip            = $::uwsgi::params::python_pip,
+    $python_dev            = $::uwsgi::params::python_dev,
+    $pidfile               = $::uwsgi::params::pidfile,
+    $socket                = $::uwsgi::params::socket,
+    $emperor_options       = undef,
+    $hiera_hash            = false,
+    $apps                  = {}
 ) inherits uwsgi::params {
 
     validate_re($log_rotate, '^yes$|^no$|^purge$')
@@ -143,7 +146,9 @@ class uwsgi (
         }
     }
 
-    # finally, configure any applications necessary
-    $applications = hiera_hash('uwsgi::app', {})
-    create_resources('uwsgi::app', $applications)
+    if $hiera_hash {
+      create_resources('uwsgi::app', hiera_hash('uwsgi::apps', {}))
+    } else {
+      create_resources('uwsgi::app', $apps)
+    }
 }
