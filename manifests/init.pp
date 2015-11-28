@@ -96,7 +96,7 @@ class uwsgi (
     $service_file          = $::uwsgi::params::service_file,
     $service_file_template = $::uwsgi::params::service_file_template,
     $service_mode          = $::uwsgi::params::service_mode,
-    $service_template      = undef,
+    $service_template      = $::uwsgi::params::service_template,
     $service_ensure        = $uwsgi::params::service_ensure,
     $service_enable        = $uwsgi::params::service_enable,
     $service_provider      = $uwsgi::params::service_provider,
@@ -120,7 +120,7 @@ class uwsgi (
     class{'::uwsgi::install': }->
     class{'::uwsgi::config': }~>
     class{'::uwsgi::service': }->
-    Class['::uwsgi']
+    Class['Uwsgi']
 
 
     case $log_rotate {
