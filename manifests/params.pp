@@ -22,11 +22,11 @@ class uwsgi::params {
     $log_rotate          = 'no'
     $python_pip          = 'python-pip'
     $service_file_ensure = 'present'
-    $user = 'uwsgi'
-    $group = 'uwsgi'
+    $user                = 'uwsgi'
+    $group               = 'uwsgi'
 
     case $::osfamily {
-        'redhat': {
+        'Redhat', 'Amazon': {
             $app_directory = '/etc/uwsgi.d'
             $pidfile       = '/var/run/uwsgi/uwsgi.pid'
             $python_dev    = 'python-devel'
@@ -35,7 +35,7 @@ class uwsgi::params {
             $service_file_template = 'uwsgi/uwsgi_service-redhat.erb'
             $service_mode  = '0555'
         }
-        'debian': {
+        'Debian': {
             $app_directory = '/etc/uwsgi/apps-enabled'
             $pidfile       = '/run/uwsgi/uwsgi.pid'
             $python_dev    = 'python-dev'
