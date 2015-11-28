@@ -28,22 +28,41 @@
 #
 # === Authors
 # - Josh Smeaton <josh.smeaton@gmail.com>
+# - Colin Wood <cwood06@gmail.com>
 #
 define uwsgi::app (
-    $uid,
-    $gid,
+    $uid                   = $::uwsgi::user,
+    $gid                   = $::uwsgi::group,
     $ensure                = 'present',
     $template              = 'uwsgi/uwsgi_app.ini.erb',
     $application_options   = undef,
     $environment_variables = undef,
+    $forreadline = undef,
 ) {
 
-    file { "${::uwsgi::app_directory}/${title}.ini":
-        ensure  => $ensure,
-        owner   => $uid,
-        group   => $gid,
-        mode    => '0644',
-        content => template($template),
-        require => Package[$::uwsgi::package_name],
-    }
+  if is_string($forreadline) {
+    validate_absolute_path($forreadline)
+  }
+
+  validate_string($uid)
+  validate_string($gid)
+  validete_string($template)
+  if $application_options {
+    validate_hash($application_options)
+  }
+
+  if $environment_variables {
+    validate_hash($environment_variables)
+  }
+
+  include ::uwsgi
+
+  file { "${::uwsgi::app_directory}/${title}.ini":
+    ensure  => $ensure,
+    owner   => $uid,
+    group   => $gid,
+    mode    => '0644',
+    content => template($template),
+    require => Class['uwsgi'],
+  }
 }
