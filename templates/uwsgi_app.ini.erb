@@ -6,29 +6,20 @@
 [uwsgi]
 uid = <%= @uid %>
 gid = <%= @gid %>
-<%
-if @application_options
-  @application_options.each do |key, value|
-    if value.is_a? Array
-      value.each do |v|
--%>
+<% if @application_options %>
+<% @application_options.each do |key, value| %>
+    <% if value.is_a? Array -%>
+       <% value.each do |v| -%>
 <%= key %> = <%= v%>
-<%
-      end
-    else
--%>
+       <% end %>
+    <% else -%>
 <%= key %> = <%= value%>
-<%
-    end
-  end
-%>
+    <% end %>
+<% end -%>
+<% end -%>
 
-<%
-if @environment_variables
-  @environment_variables.sort.each do |key, value|
--%>
+<% if @environment_variables %>
+<% @environment_variables.each do |key, value| -%>
 env = <%= key %>=<%= value %>
-<%
-  end
-end
--%>
+<% end -%>
+<% end -%>
