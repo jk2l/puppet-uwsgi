@@ -6,8 +6,8 @@ class uwsgi::config {
 
   file { $::uwsgi::config_file:
     ensure  => present,
-    owner   => 'root',
-    group   => 'root',
+    owner   => $::uwsgi::user,
+    group   => $::uwsgi::group,
     mode    => '0644',
     content => template('uwsgi/uwsgi.ini.erb'),
   }
@@ -15,16 +15,16 @@ class uwsgi::config {
 
   file { $::uwsgi::service_file:
     ensure  => $::uwsgi::service_file_ensure,
-    owner   => 'root',
-    group   => 'root',
+    owner   => $::uwsgi::user,
+    group   => $::uwsgi::group,
     mode    => $::uwsgi::service_mode,
     content => template($::uwsgi::service_file_template),
   }
 
   file { $::uwsgi::app_directory:
-    ensure => 'directory',
-    owner  => 'root',
-    group  => 'root',
+    ensure => directory,
+    owner  => $::uwsgi::user,
+    group  => $::uwsgi::group,
     mode   => '0644',
   }
 }
