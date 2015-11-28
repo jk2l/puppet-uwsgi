@@ -12,12 +12,11 @@ class uwsgi::params {
     $service_name        = 'uwsgi'
     $service_ensure      = true
     $service_enable      = true
-    $service_provider    = 'upstart'
     $manage_service_file = true
     $config_file         = '/etc/uwsgi.ini'
     $tyrant              = true
-    $install_pip         = true
-    $install_python_dev  = true
+    $install_pip         = false
+    $install_python_dev  = false
     $log_file            = '/var/log/uwsgi/uwsgi-emperor.log'
     $log_rotate          = 'no'
     $python_pip          = 'python-pip'

@@ -50,8 +50,8 @@ describe 'uwsgi' do
       it { should contain_file('/etc/uwsgi.d').with_ensure('directory') }
       it { should contain_file('/etc/init.d/uwsgi').with_ensure('present') }
       it { should contain_file('/etc/uwsgi.ini') }
-      it { should contain_package('python-devel') }
-      it { should contain_package('python-pip') }
+      it { should_not contain_package('python-devel') }
+      it { should_not contain_package('python-pip') }
   end
 
   context "on osfamily => Debain" do
@@ -63,6 +63,7 @@ describe 'uwsgi' do
       it { should contain_file('/etc/uwsgi/apps-enabled') }
       it { should contain_file('/etc/init/uwsgi.conf') }
       it { should contain_file('/etc/uwsgi.ini') }
-      it { should contain_package('python-dev') }
+      it { should_not contain_package('python-dev') }
+      it { should_not contain_package('python-pip') }
   end
 end
