@@ -18,6 +18,10 @@ class uwsgi::install {
     }
   }
 
+  user {$::uwsgi::user:
+    ensure => present,
+  }
+
   package { $uwsgi::package_name:
     ensure   => $uwsgi::package_ensure,
     provider => $uwsgi::package_provider,
