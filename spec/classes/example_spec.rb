@@ -18,6 +18,9 @@ describe 'uwsgi' do
 
           it { is_expected.to contain_service('uwsgi') }
           it { is_expected.to contain_package('uwsgi').with_ensure('present') }
+
+          it { should contain_user('uwsgi') }
+          it { should contain_file('/etc/uwsgi.ini') }
         end
       end
     end
