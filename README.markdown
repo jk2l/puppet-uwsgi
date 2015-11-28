@@ -17,31 +17,43 @@
 
 ## Overview
 
-A one-maybe-two sentence summary of what the module does/what problem it solves. This is your 30 second elevator pitch for your module. Consider including OS/Puppet version it works with.
+This module will support uwsgi through a emporer mode on both Debian and Redhat
+based families. This is actully a fork of [Engage/puppet-uwsgi](https://github.com/Engage/puppet-uwsgi) with some updates to overall style, unit testing
+and updating to include a more modern design pattern. This also includes
+support for uwsgi for-readline and removes having to setup support for redhat
+manually.
 
 ## Module Description
 
-If applicable, this section should have a brief description of the technology the module integrates with and what that integration enables. This section should answer the questions: "What does this module *do*?" and "Why would I use it?"
-
-If your module has a range of functionality (installation, configuration, management, etc.) this is the time to mention it.
+Setup and configure uwsgi in a emporer mode with support for vassels.
 
 ## Setup
 
 ### What uwsgi affects
 
-* A list of files, packages, services, or operations that the module will alter, impact, or execute on the system it's installed on.
-* This is a great place to stick any warnings.
-* Can be in list or paragraph form.
-
-### Setup Requirements **OPTIONAL**
-
-If your module requires anything extra before setting up (pluginsync enabled, etc.), mention it here.
+* uwsgi, /etc/uwsgi.ini, and a app folder to set your uwsgi vassals
 
 ### Beginning with uwsgi
 
-The very basic steps needed for a user to get the module up and running.
+To setup it should be as easy as `include uwsgi` this setup does assume you are
+managing python through a different module and that you have pip, and python
+development packages installed.
 
-If your most recent release breaks compatibility or requires particular steps for upgrading, you may wish to include an additional section here: Upgrading (For an example, see http://forge.puppetlabs.com/puppetlabs/firewall).
+For a good python module checkout [stankevich/python](https://forge.puppetlabs.com/stankevich/python)
+
+To install apps you can call it via hiera with
+
+```yaml
+---
+uwsgi::apps:
+    myapp:
+        application_options:
+            virtualenv: /var/virtualenvs/myapp
+            chdir: /var/www/html/myapp
+            master: true
+            logto: /var/log/uwsgi/myapp.log
+            ...
+```
 
 ## Usage
 
@@ -53,12 +65,10 @@ Here, list the classes, types, providers, facts, etc contained in your module. T
 
 ## Limitations
 
-This is where you list OS compatibility, version compatibility, etc.
+Does not support zerg mode, also needs support for systemd based config files.
 
 ## Development
 
-Since your module is awesome, other users will want to play with it. Let them know what the ground rules for contributing are.
-
-## Release Notes/Contributors/Etc **Optional**
-
-If you aren't using changelog, put your release notes here (though you should consider using changelog). You may also add any additional sections you feel are necessary or important to include here. Please use the `## ` header.
+To help you just need to fork the repository, and then do a `bundle install` ,
+and `bundle exec rake test`. Every pull request will run through all rspec
+tests.
