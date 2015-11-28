@@ -38,4 +38,31 @@ describe 'uwsgi' do
       it { expect { is_expected.to contain_package('uwsgi') }.to raise_error(Puppet::Error, /Nexenta not supported/) }
     end
   end
+
+  context "on osfamily => Redhat" do
+      let (:facts) do
+        {
+            :osfamily => 'Redhat',
+
+        }
+      end
+
+      it { should contain_file('/etc/uwsgi.d').with_ensure('directory') }
+      it { should contain_file('/etc/init.d/uwsgi').with_ensure('present') }
+      it { should contain_file('/etc/uwsgi.ini') }
+      it { should contain_package('python-devel') }
+      it { should contain_package('python-pip') }
+  end
+
+  context "on osfamily => Debain" do
+      let (:facts) do
+          {
+            :osfamily => 'Debian'
+          }
+      end
+      it { should contain_file('/etc/uwsgi/apps-enabled') }
+      it { should contain_file('/etc/init/uwsgi.conf') }
+      it { should contain_file('/etc/uwsgi.ini') }
+      it { should contain_package('python-dev') }
+  end
 end
