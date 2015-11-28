@@ -8,7 +8,7 @@ uid = <%= @uid %>
 gid = <%= @gid %>
 <%
 if @application_options
-  @application_options.sort.each do |key, value|
+  @application_options.each do |key, value|
     if value.is_a? Array
       value.each do |v|
 -%>
@@ -21,7 +21,7 @@ if @application_options
 <%
     end
   end
-end
+
 
 if @environment_variables
   @environment_variables.sort.each do |key, value|
