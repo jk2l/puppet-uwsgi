@@ -18,10 +18,10 @@
 # Source function library.
 . /etc/rc.d/init.d/functions
 
-RUNAS="<%= @user %>"
-UWSGILOG="<%= @log_file %>"
-UWSGIPID="<%= @pidfile %>"
-UWSGISOCKET="<%= @socket %>"
+RUNAS="<%= scope.lookupvar('uwsgi::user') %>"
+UWSGILOG="<%= scope.lookupvar('uwsgi::log_file') %>"
+UWSGIPID="<%= scope.lookupvar('uwsgi::pidfile') %>"
+UWSGISOCKET="<%= scope.lookupvar('uwsgi::socket') %>"
 
 OPTIONS="--daemonize "${UWSGILOG}" --die-on-term --ini <%= @config_file %>"
 

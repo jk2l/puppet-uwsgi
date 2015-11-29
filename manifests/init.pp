@@ -115,6 +115,8 @@ class uwsgi (
     $socket                = $::uwsgi::params::socket,
     $emperor_options       = undef,
     $hiera_hash            = false,
+    $user                  = $::uwsgi::params::user,
+    $group                 = $::uwsgi::params::group,
     $apps                  = {}
 ) inherits uwsgi::params {
 

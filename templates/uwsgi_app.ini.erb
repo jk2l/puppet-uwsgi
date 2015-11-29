@@ -20,8 +20,8 @@
 env = <%= key %>=<%= value %>
 <%- end -%>
 <%- end -%>
-<%- if environment_file -%>
-for-readline = <%= environment_file %>
+<%- if @environment_file -%>
+for-readline = <%= @environment_file %>
   env = %(_)
 end-for =
 <%- end -%>
