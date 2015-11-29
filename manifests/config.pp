@@ -4,14 +4,20 @@
 #
 class uwsgi::config {
 
+  file { $::uwsgi::config_directory:
+    ensure => directory,
+    owner  => $::uwsgi::user,
+    group  => $::uwsgi::group,
+  }
+
   file { $::uwsgi::config_file:
     ensure  => present,
     owner   => $::uwsgi::user,
     group   => $::uwsgi::group,
     mode    => '0644',
     content => template('uwsgi/uwsgi.ini.erb'),
+    require => File[$::uwsgi::config_directory],
   }
-
 
   file { $::uwsgi::service_file:
     ensure  => $::uwsgi::service_file_ensure,
@@ -22,9 +28,10 @@ class uwsgi::config {
   }
 
   file { $::uwsgi::app_directory:
-    ensure => directory,
-    owner  => $::uwsgi::user,
-    group  => $::uwsgi::group,
-    mode   => '0644',
+    ensure  => directory,
+    owner   => $::uwsgi::user,
+    group   => $::uwsgi::group,
+    mode    => '0644',
+    require => File[$::uwsgi::config_directory],
   }
 }

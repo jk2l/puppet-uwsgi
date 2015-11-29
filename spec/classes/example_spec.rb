@@ -20,7 +20,9 @@ describe 'uwsgi' do
           it { is_expected.to contain_package('uwsgi').with_ensure('present') }
 
           it { should contain_user('uwsgi') }
-          it { should contain_file('/etc/uwsgi.ini') }
+          it { should contain_file('/etc/uwsgi/emperor.ini') }
+          it { should contain_file('/etc/uwsgi').with_ensure('directory') }
+          it { should contain_file('/etc/uwsgi/vassals.d').with_ensure('directory') }
         end
       end
     end
@@ -47,10 +49,8 @@ describe 'uwsgi' do
         }
       end
 
-      it { should contain_file('/etc/uwsgi.d').with_ensure('directory') }
       it { should contain_file('/etc/init.d/uwsgi').with_ensure('present') }
       it { should contain_file('/etc/init.d/uwsgi').with_content(/RUNAS="uwsgi"/) }
-      it { should contain_file('/etc/uwsgi.ini') }
       it { should_not contain_package('python-devel') }
       it { should_not contain_package('python-pip') }
   end
@@ -61,9 +61,7 @@ describe 'uwsgi' do
             :osfamily => 'Debian'
           }
       end
-      it { should contain_file('/etc/uwsgi/apps-enabled') }
       it { should contain_file('/etc/init/uwsgi.conf') }
-      it { should contain_file('/etc/uwsgi.ini') }
       it { should_not contain_package('python-dev') }
       it { should_not contain_package('python-pip') }
   end

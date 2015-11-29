@@ -117,10 +117,15 @@ class uwsgi (
     $hiera_hash            = false,
     $user                  = $::uwsgi::params::user,
     $group                 = $::uwsgi::params::group,
-    $apps                  = {}
+    $apps                  = {},
+    $plugins               = [],
+    $plugins_directory     = $::uwsgi::params::plugins_directory,
+    $config_directory      = $::uwsgi::params::config_directory
 ) inherits uwsgi::params {
 
     validate_re($log_rotate, '^yes$|^no$|^purge$')
+    validate_array($plugins)
+    validate_absolute_path($plugins_directory)
 
     class{'::uwsgi::install': }->
     class{'::uwsgi::config': }~>

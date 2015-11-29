@@ -13,12 +13,15 @@ class uwsgi::params {
     $service_ensure      = true
     $service_enable      = true
     $manage_service_file = true
-    $config_file         = '/etc/uwsgi.ini'
+    $config_file         = '/etc/uwsgi/emperor.ini'
     $tyrant              = true
     $install_pip         = false
     $install_python_dev  = false
-    $log_file            = '/var/log/uwsgi/uwsgi-emperor.log'
+    $log_file            = '/var/log/uwsgi/emperor.log'
     $log_rotate          = 'no'
+    $config_directory    = '/etc/uwsgi'
+    $plugins_directory   = '/etc/uwsgi/plugins'
+    $app_directory       = '/etc/uwsgi/vassals.d'
     $python_pip          = 'python-pip'
     $service_file_ensure = 'present'
     $user                = 'uwsgi'
@@ -26,7 +29,6 @@ class uwsgi::params {
 
     case $::osfamily {
         'Redhat', 'Amazon': {
-            $app_directory = '/etc/uwsgi.d'
             $pidfile       = '/var/run/uwsgi/uwsgi.pid'
             $python_dev    = 'python-devel'
             $socket        = '/var/run/uwsgi/uwsgi.socket'
@@ -35,7 +37,6 @@ class uwsgi::params {
             $service_mode  = '0555'
         }
         'Debian': {
-            $app_directory = '/etc/uwsgi/apps-enabled'
             $pidfile       = '/run/uwsgi/uwsgi.pid'
             $python_dev    = 'python-dev'
             $socket        = '/run/uwsgi/uwsgi.socket'
