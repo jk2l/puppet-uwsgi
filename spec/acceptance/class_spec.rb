@@ -5,7 +5,10 @@ describe 'uwsgi class' do
     # Using puppet_apply as a helper
     it 'should work idempotently with no errors' do
       pp = <<-EOS
-      class { 'uwsgi': }
+      class { 'uwsgi':
+            install_pip => true,
+            install_python_dev => true
+      }
       EOS
 
       # Run it twice and test for idempotency
@@ -14,7 +17,7 @@ describe 'uwsgi class' do
     end
 
     describe package('uwsgi') do
-      it { is_expected.to be_installed }
+      it { is_expected.to be_installed.by('pip') }
     end
 
     describe service('uwsgi') do
