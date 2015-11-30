@@ -6,8 +6,7 @@ describe 'uwsgi class' do
     it 'should work idempotently with no errors' do
       pp = <<-EOS
       class { 'uwsgi':
-            install_pip => true,
-            install_python_dev => true
+        setup_python => true,
       }
       EOS
 

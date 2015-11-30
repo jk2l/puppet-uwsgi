@@ -52,7 +52,7 @@ describe 'uwsgi' do
       it { should contain_file('/etc/init.d/uwsgi').with_ensure('present') }
       it { should contain_file('/etc/init.d/uwsgi').with_content(/RUNAS="uwsgi"/) }
       it { should_not contain_package('python-devel') }
-      it { should_not contain_package('python-pip') }
+      it { should_not contain_package('pip') }
   end
 
   context "on osfamily => Debain" do
