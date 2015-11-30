@@ -115,19 +115,28 @@ class uwsgi (
     $user                  = $::uwsgi::params::user,
     $group                 = $::uwsgi::params::group,
     $apps                  = {},
-    $plugins               = [],
+    $plugins               = {},
     $plugins_directory     = $::uwsgi::params::plugins_directory,
     $config_directory      = $::uwsgi::params::config_directory
 ) inherits uwsgi::params {
 
     validate_re($log_rotate, '^yes$|^no$|^purge$')
-    validate_array($plugins)
+    validate_hash($plugins)
+    validate_hash($apps)
     validate_absolute_path($plugins_directory)
 
     class{'::uwsgi::install': }->
     class{'::uwsgi::config': }~>
     class{'::uwsgi::service': }->
     Class['Uwsgi']
+
+    if $hiera_hash {
+      create_resources('uwsgi::app', hiera_hash('uwsgi::apps', {}))
+    } else {
+      create_resources('uwsgi::app', $apps)
+    }
+
+    create_resources('uwsgi::plugin', $plugins)
 
 
     case $log_rotate {
@@ -150,9 +159,4 @@ class uwsgi (
         }
     }
 
-    if $hiera_hash {
-      create_resources('uwsgi::app', hiera_hash('uwsgi::apps', {}))
-    } else {
-      create_resources('uwsgi::app', $apps)
-    }
 }
