@@ -10,7 +10,7 @@ class uwsgi::config {
     group  => $::uwsgi::group,
   }
 
-  file { $::uwsgi::plugin_directory:
+  file { $::uwsgi::plugins_directory:
     ensure => directory,
     owner  => $::uwsgi::user,
     group  => $::uwsgi::group,
