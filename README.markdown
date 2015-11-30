@@ -1,6 +1,8 @@
 # Uwsgi Puppet Module
 
 [![Build Status](https://travis-ci.org/cwood/puppet-uwsgi.svg)](https://travis-ci.org/cwood/puppet-uwsgi)
+![Puppet Forge Version](https://img.shields.io/puppetforge/v/cwood/uwsgi.svg)
+![Puppet Forge Score](https://img.shields.io/puppetforge/f/cwood/uwsgi.svg)
 
 #### Table of Contents
 
