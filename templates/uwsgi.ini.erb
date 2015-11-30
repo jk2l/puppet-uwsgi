@@ -7,7 +7,7 @@
 <% if @socket -%>
 socket = <%= @socket %>
 <% end -%>
-plugins-dir <%= scope.lookupvar('uwsgi::plugins_directory') %>
+plugin-dir <%= scope.lookupvar('uwsgi::plugins_directory') %>
 pidfile = <%= @pidfile %>
 emperor = <%= @app_directory %>
 emperor-tyrant = <%= @tyrant %>
@@ -19,7 +19,7 @@ logto = <%= @log_file %>
 <% end -%>
 <%
 if @emperor_options
-  @emperor_options.sort.each do |key, value|
+  @emperor_options.each do |key, value|
 -%>
 <%= key %> = <%= value%>
 <%
