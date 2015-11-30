@@ -1,6 +1,6 @@
 {
   "name": "cwood-uwsgi",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "author": "cwood",
   "summary": "Manage uwsgi through emporer mode",
   "license": "MIT",
