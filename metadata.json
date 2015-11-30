@@ -4,7 +4,7 @@
   "author": "cwood",
   "summary": "Manage uwsgi through emporer mode",
   "license": "MIT",
-  "source": "github.com/cwood/puppet-uwsgi",
+  "source": "https://github.com/cwood/puppet-uwsgi",
   "project_page": "https://github.com/cwood/puppet-uwsgi",
   "issues_url": "https://github.com/cwood/puppet-uwsgi/issues",
   "dependencies": [
