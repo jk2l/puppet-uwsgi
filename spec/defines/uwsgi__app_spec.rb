@@ -16,6 +16,7 @@ describe "uwsgi::app" do
         it { should contain_file('/etc/uwsgi/vassals.d/testapp.ini') }
     end
 
+    it { should contain_uwsgi__app('testapp') }
     it { should contain_file('/etc/uwsgi/vassals.d/testapp.ini').with_content(/[uwsgi]/) }
     it { should contain_file('/etc/uwsgi/vassals.d/testapp.ini').with_content(/for-readline = \/etc\/settings/) }
 end
