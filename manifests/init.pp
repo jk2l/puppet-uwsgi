@@ -110,6 +110,7 @@ class uwsgi (
     $setup_python          = $::uwsgi::params::setup_python,
     $pidfile               = $::uwsgi::params::pidfile,
     $socket                = $::uwsgi::params::socket,
+    $purge                 = $::uwsgi::params::purge,
     $emperor_options       = undef,
     $hiera_hash            = false,
     $user                  = $::uwsgi::params::user,

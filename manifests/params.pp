@@ -24,6 +24,7 @@ class uwsgi::params {
     $user                = 'uwsgi'
     $group               = 'uwsgi'
     $setup_python        = false
+    $purge               = true
 
     case $::osfamily {
         'Redhat', 'Amazon': {
