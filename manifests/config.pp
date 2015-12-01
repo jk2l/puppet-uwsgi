@@ -34,12 +34,12 @@ class uwsgi::config {
   }
 
   file { $::uwsgi::app_directory:
-    ensure    => directory,
-    owner     => $::uwsgi::user,
-    group     => $::uwsgi::group,
-    recursive => true,
-    purge     => $::uwsgi::purge,
-    mode      => '0644',
-    require   => File[$::uwsgi::config_directory],
+    ensure  => directory,
+    owner   => $::uwsgi::user,
+    group   => $::uwsgi::group,
+    recurse => true,
+    purge   => $::uwsgi::purge,
+    mode    => '0644',
+    require => File[$::uwsgi::config_directory],
   }
 }

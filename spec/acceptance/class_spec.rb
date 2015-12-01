@@ -19,6 +19,30 @@ describe 'uwsgi class' do
       it { is_expected.to be_installed.by('pip') }
     end
 
+    describe file('/etc/uwsgi/vassals.d') do
+      it { should be_directory }
+      it { should be_owned_by 'uwsgi' }
+    end
+
+    describe file('/etc/uwsgi/plugins') do
+      it { should be_directory }
+      it { should be_owned_by 'uwsgi' }
+    end
+
+    describe file('/var/run/uwsgi/uwsgi.socket') do
+      it { should be_socket }
+    end
+
+    describe user('uwsgi') do
+      it { should exist }
+      it { should_not have_login_shell "/bin/bash" }
+    end
+
+    describe file('/etc/uwsgi/emperor.ini') do
+      it { should be_file }
+      it { should be_owned_by 'uwsgi' }
+    end
+
     describe service('uwsgi') do
       it { is_expected.to be_enabled }
       it { is_expected.to be_running }

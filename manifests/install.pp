@@ -24,6 +24,8 @@ class uwsgi::install {
   }
 
   user {$::uwsgi::user:
-    ensure => present,
+    ensure     => present,
+    managehome => false,
+    shell      => '/bin/false'
   }
 }

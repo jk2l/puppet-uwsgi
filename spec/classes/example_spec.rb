@@ -22,7 +22,13 @@ describe 'uwsgi' do
           it { should contain_user('uwsgi') }
           it { should contain_file('/etc/uwsgi/emperor.ini') }
           it { should contain_file('/etc/uwsgi').with_ensure('directory') }
-          it { should contain_file('/etc/uwsgi/vassals.d').with_ensure('directory') }
+          it do
+            should contain_file('/etc/uwsgi/vassals.d').with(
+              'ensure' => 'directory',
+              'recurse' => true,
+              'purge' => true
+            )
+          end
           it { should contain_file('/etc/uwsgi/plugins').with_ensure('directory') }
         end
       end

@@ -124,6 +124,7 @@ class uwsgi (
     validate_re($log_rotate, '^yes$|^no$|^purge$')
     validate_hash($plugins)
     validate_hash($apps)
+    validate_bool($purge)
     validate_absolute_path($plugins_directory)
 
     class{'::uwsgi::install': }->
