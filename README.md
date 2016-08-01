@@ -55,15 +55,6 @@ redhat init.d or upstart depending on the service provider.
    The service onboot state.
    Default: true
 
-* `service_provider`
-   The service provider.
-   Default: 'upstart'
-
-   `upstart` is required for the default `service_file`, and
-   works on RedHat >= 6. Setting `service_provider` to `redhat`
-   will now deploy the init.d service file, unless you specifically
-   set `service_template` etc.
-
 * `manage_service_file`
    Whether to override the system service file if it exists.
    Default: true
@@ -236,7 +227,6 @@ uwsgi::package_name:
   - 'uwsgi-plugins-all'
 uwsgi::package_provider: 'apt'
 uwsgi::service_name: 'uwsgi-emperor'
-uwsgi::service_provider: 'debian'
 uwsgi::manage_service_file: false
 uwsgi::config_file: '/etc/uwsgi-emperor/emperor.ini'
 uwsgi::log_dir: '/var/log/uwsgi/emperor.log'

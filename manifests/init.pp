@@ -38,11 +38,6 @@
 # [*service_enable*]
 #    The service onboot state. Default: true
 #
-# [*service_provider*]
-#    The service provider. Default: 'upstart'
-#    'upstart' is required for the default service_file, and
-#    works on RedHat >= 6
-#
 # [*manage_service_file*]
 #    Whether to override the system service file if it exists. Default: true
 #
@@ -99,7 +94,6 @@ class uwsgi (
     $service_mode          = $::uwsgi::params::service_mode,
     $service_ensure        = $::uwsgi::params::service_ensure,
     $service_enable        = $::uwsgi::params::service_enable,
-    $service_provider      = $::uwsgi::params::service_provider,
     $manage_service_file   = $::uwsgi::params::manage_service_file,
     $config_file           = $::uwsgi::params::config_file,
     $log_file              = $::uwsgi::params::log_file,
