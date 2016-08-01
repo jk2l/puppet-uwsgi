@@ -28,7 +28,7 @@
 # [*service_file_mode*]
 #    The mode of the service file. Default: '0644'
 #
-# [*service_template*]
+# [*service_file_template*]
 #    The location of the template to generate the *service_file*.
 #    Default: 'uwsgi/uwsgi_upstart.conf.erb'
 #
@@ -97,7 +97,6 @@ class uwsgi (
     $service_file          = $::uwsgi::params::service_file,
     $service_file_template = $::uwsgi::params::service_file_template,
     $service_mode          = $::uwsgi::params::service_mode,
-    $service_template      = $::uwsgi::params::service_template,
     $service_ensure        = $::uwsgi::params::service_ensure,
     $service_enable        = $::uwsgi::params::service_enable,
     $service_provider      = $::uwsgi::params::service_provider,

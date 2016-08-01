@@ -47,10 +47,6 @@ redhat init.d or upstart depending on the service provider.
    The location of the service file.
    Default: '/etc/init/uwsgi.conf'
 
-* `service_template`
-   The location of the template to generate the *service_file*.
-   Default: 'uwsgi/uwsgi_upstart.conf.erb'
-
 * `service_ensure`
    The service state.
    Default: true
